@@ -43,6 +43,14 @@
 ;;; It might be cool to write a function that
 ;;; generates weighted proportions of 0's and 1's.
 
+; placeholder new scoring function
+;; (defn custom-score
+;;   [answer]
+;;   (if (> (:total-weight answer)
+;;          (:capacity (:instance answer)))
+;;     0
+;;     (:total-value answer)))
+
 (defn score
   "Takes the total-weight of the given answer unless it's over capacity,
    in which case we return 0."
@@ -95,6 +103,12 @@
               (repeatedly max-tries #(random-answer instance)))))
 
 ; (random-search penalized-score knapPI_16_200_1000_1 10000)
+
+; placeholder answer mutator function
+;; (defn custom-mutate-choices
+;;   [choices]
+;;   (let [mutation-rate (/ 1 (count choices))]
+;;     (map #(if (< (rand) mutation-rate) (- 1 %) %) choices)))
 
 (defn mutate-choices
   [choices]
