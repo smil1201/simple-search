@@ -73,11 +73,14 @@
                       ;(partial core/hill-climber core/custom-mutate-answer core/custom-score)
 
                       {:label "hill_climber_cliff_score"})
-                    ;(with-meta
-                    ;  (partial core/hill-climber core/mutate-answer core/penalized-score)
-                    ;  {:label "hill_climber_penalized_score"})
-                    ;(with-meta (partial core/random-search core/score)
-                    ;  {:label "random_search"})
+                    (with-meta
+                      (partial core/hill-climber core/mutate-answer core/lexi-score)
+                      {:label "hill_climber_lexi_score"})
+                    (with-meta
+                      (partial core/hill-climber core/mutate-answer core/penalized-score)
+                      {:label "hill_climber_penalized_score"})
+                    (with-meta (partial core/random-search core/score)
+                      {:label "random_search"})
                     ]
                    (map get-labelled-problem
                         ["knapPI_11_20_1000_4" "knapPI_13_20_1000_4" "knapPI_16_20_1000_4"
