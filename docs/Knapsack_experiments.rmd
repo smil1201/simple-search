@@ -120,3 +120,26 @@ rp
 plot(rp)
 text(rp, use.n = TRUE)
 ```
+
+#Group Sleepless: Rough Data writeup
+
+From here down is added statistics/test code for the data our AI group has generated so far.
+
+
+A plot of a few searchers ran on all given example problems. An additional case was included for lexi-score.
+
+```{r, echo=FALSE}
+data_all_probs_30_runs <- read.csv("../data/data_all_problems_30_runs_2000_tries_with_lexi.txt", sep="")
+
+data_all_probs_30_runs$Non_negative_score = ifelse(data_all_probs_30_runs$Score<0, 0, data_all_probs_30_runs$Score)
+
+plot(data_all_probs_30_runs$Non_negative_score ~ data_all_probs_30_runs$Search_method,
+     xlab="Searcher", ylab="Score")
+```
+
+statistical significance comparison
+
+```{r}
+pairwise.wilcox.test(data_all_probs_30_runs$Non_negative_score, data_all_probs_30_runs$Search_method)
+```
+
