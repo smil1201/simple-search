@@ -125,9 +125,41 @@ text(rp, use.n = TRUE)
 
 From here down is added statistics/test code for the data our AI group has generated so far.
 
-
+#Lexi Score
 A plot of a few searchers ran on all given example problems. An additional case was included for lexi-score.
 
+```{r, echo=FALSE}
+data_30_runs_lexi <- read.csv("../data/data_30_runs_1000_tries_with_lexi.txt", sep="")
+
+data_30_runs_lexi$Non_negative_score = ifelse(data_30_runs_lexi$Score<0, 0, data_30_runs_lexi$Score)
+
+plot(data_30_runs_lexi$Non_negative_score ~ data_30_runs_lexi$Search_method,
+     xlab="Searcher", ylab="Score")
+```
+
+statistical significance comparison
+
+```{r}
+pairwise.wilcox.test(data_30_runs_lexi$Non_negative_score, data_30_runs_lexi$Search_method)
+```
+problems separated
+
+```{r, echo=FALSE}
+ggplot(data_30_runs_lexi, aes(Max_evals, Non_negative_score)) + geom_boxplot() + facet_grid(Problem ~ Search_method)
+```
+rpart
+
+```{r}
+library("rpart")
+library("rpart.plot")
+rp <- rpart(Non_negative_score ~ Search_method + Problem + Max_evals, data=data_30_runs_lexi)
+rp
+rpart.plot(rp, type=3, extra=100)
+
+```
+
+
+#All Problems
 ```{r, echo=FALSE}
 data_all_probs_30_runs <- read.csv("../data/data_all_problems_30_runs_2000_tries_with_lexi.txt", sep="")
 
@@ -142,4 +174,18 @@ statistical significance comparison
 ```{r}
 pairwise.wilcox.test(data_all_probs_30_runs$Non_negative_score, data_all_probs_30_runs$Search_method)
 ```
+problems separated
 
+```{r, echo=FALSE}
+ggplot(data_all_probs_30_runs, aes(Search_method, Non_negative_score)) + geom_boxplot() + facet_grid(Problem ~ Search_method)
+```
+rpart
+
+```{r}
+library("rpart")
+
+rp <- rpart(Non_negative_score ~ Search_method + Problem + Max_evals, data=data_all_probs_30_runs)
+rp
+plot(rp)
+text(rp, use.n = TRUE)
+```

@@ -123,6 +123,33 @@
 ; (def ra (random-answer knapPI_11_20_1000_1))
 ; (mutate-answer ra)
 
+
+;hill-climber with random restarts pseudocode
+;T <- distribution of possible time intervals
+;S <- some initial random candidate solution
+;Best <- S
+;repeat
+;   Time <- Random time in the near future, chosen from T
+;   repeat
+;      R <- Tweak(Copy(S))
+;      if Quality(R) > Quality(S) then
+;         S <- R
+;   until S is the ideal solution, or Time is up, or we have run out of total time
+;   if Quality(S) > Quality(Best) then
+;      Best <- S
+;   S <- some random candidate solution
+;until Best is the ideal solution or we have run out of total time
+;return Best
+
+;population
+;map(Mutate population)
+;(repeatedly pop-size (fn [] (random-answer ___)))
+
+(defn evolution-algorithm
+  [mutator scorer instance max tries]
+  (loop
+
+
 (defn hill-climber
   [mutator scorer instance max-tries]
   (loop [current-best (add-score scorer (random-answer instance))
@@ -138,8 +165,7 @@
 ; (time (random-search score knapPI_16_200_1000_1 100000
 ; ))
 
-; (time (hill-climber mutate-answer score knapPI_16_200_1000_1 100000
-; ))
+ (hill-climber mutate-answer score knapPI_16_200_1000_1 100000)
 
 ; (time (hill-climber mutate-answer penalized-score knapPI_16_200_1000_1 100000
 ; ))
