@@ -136,18 +136,24 @@
                             #(rand-int 2))]
     (make-answer instance choices)))
 
-
+;in-progress basic generational algorithm
 (defn evolution-algorithm
-  [instance]
-    (let [pop-size 100]
-      (repeatedly pop-size (mutate-answer (random-answer instance)))))
+  [mutator scorer pop-size instance max-tries]
+    (let [gen (repeatedly pop-size (fn [] (random-answer instance)))
+          gen-score (map #(add-score scorer %) gen)
+          current (take 1 gen-score)
+          mutate-gen (repeatedly pop-size (map #(mutate-answer (gen))))]
+
+      ;loop needed
+      ;best child of each generation needed to be saved
+
 
 ;SCRATCH work for developing algorithm
 (let [gen (repeatedly 3 (fn [] (random-answer knapPI_16_200_1000_1)))
       gen-score (map #(add-score penalized-score %) gen)
       current (take 1 gen-score) ;;first item in list for now
 ;;        something to find best item in current gen (map #(if (% > current) current=% do nothing) y)
-;;need to save generatin number and instance with score
+;;need to save generation number and instance with score
       ]
          [gen-score current]
   )
