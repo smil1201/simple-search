@@ -54,7 +54,7 @@
 (defn score
   "Takes the total-weight of the given answer unless it's over capacity,
    in which case we return 0."
-  [answer]
+  [answer]weight
   (if (> (:total-weight answer)
          (:capacity (:instance answer)))
     0
@@ -141,12 +141,20 @@
   [mutator scorer pop-size instance max-tries]
     (let [gen (repeatedly pop-size (fn [] (random-answer instance)))
           gen-score (map #(add-score scorer %) gen)
-          current (take 1 gen-score)
-          mutate-gen (repeatedly pop-size (map #(mutate-answer (gen))))]
+          ;current (take 1 gen-score)
+          mutate-gen (map #(mutate-answer %) gen)]))
 
       ;loop needed
       ;best child of each generation needed to be saved
 
+
+;IMPORTANT NOTES
+;max-keys :score to find best score of gen
+;add gen number to instance
+;pop of ~50, if max tries = 1000, than run 20 generations
+;mutate pop of 50 (mutate = new gen, so add new gen number)
+;sort old gen and mutated gen by score, take 50 (first 50 aka 50 best scores)
+;loop/recur until run out of max tries, changing best each loop (possibly)
 
 ;SCRATCH work for developing algorithm
 (let [gen (repeatedly 3 (fn [] (random-answer knapPI_16_200_1000_1)))
