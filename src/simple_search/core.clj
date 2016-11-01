@@ -54,7 +54,7 @@
 (defn score
   "Takes the total-weight of the given answer unless it's over capacity,
    in which case we return 0."
-  [answer]weight
+  [answer]
   (if (> (:total-weight answer)
          (:capacity (:instance answer)))
     0
@@ -123,11 +123,6 @@
 ; (def ra (random-answer knapPI_11_20_1000_1))
 ; (mutate-answer ra)
 
-
-;population
-;map(Mutate population)
-;(repeatedly pop-size (fn [] (random-answer ___)))
-
 (defn random-answer
   "Construct a random answer for the given instance of the
   knapsack problem."
@@ -138,33 +133,53 @@
 
 ;in-progress basic generational algorithm
 (defn evolution-algorithm
-  [mutator scorer pop-size instance max-tries]
-    (let [gen (repeatedly pop-size (fn [] (random-answer instance)))
-          gen-score (map #(add-score scorer %) gen)
-          ;current (take 1 gen-score)
-          mutate-gen (map #(mutate-answer %) gen)]))
+  [mutator scorer instance max-tries]
+  (let [first-gen (map #(add-score scorer %)(repeatedly 50 (fn [] (random-answer instance))))]
+  (loop [gen first-gen
+         num-tries 1]
+    (let [max (apply max-key :score gen)
+          mutate-gen (map #(add-score scorer %)(map mutator gen))
+          mutate-max (apply max-key :score mutate-gen)
+          hi-pass (take-last 50 (sort-by :score (concat gen mutate-gen)))
+          max-instance (apply max-key :score hi-pass)]
 
-      ;loop needed
-      ;best child of each generation needed to be saved
+          (if (>= num-tries max-tries)
+            max-instance
+          (recur hi-pass (inc num-tries)))))))
 
+
+;additional possibilities
+
+        ;(loop [gen first-gen
+        ;       num-tries 1
+        ;       poor-mutate 0]
+
+        ;(if (> (:score max)
+        ;       (:score mutate-max))
+        ;(mutate-gen (map #(add-score scorer %)(map mutator gen))
+        ;(inc poor-mutate))
+
+        ;bad direction, remutate previous gen, increment number of gens without a new max
+        ;if poor-mutate hits a certain max then you are probably at the highest possible already
+
+
+
+(evolution-algorithm mutate-answer lexi-score knapPI_16_200_1000_1 100)
 
 ;IMPORTANT NOTES
-;max-keys :score to find best score of gen
 ;add gen number to instance
-;pop of ~50, if max tries = 1000, than run 20 generations
 ;mutate pop of 50 (mutate = new gen, so add new gen number)
-;sort old gen and mutated gen by score, take 50 (first 50 aka 50 best scores)
-;loop/recur until run out of max tries, changing best each loop (possibly)
 
 ;SCRATCH work for developing algorithm
-(let [gen (repeatedly 3 (fn [] (random-answer knapPI_16_200_1000_1)))
-      gen-score (map #(add-score penalized-score %) gen)
-      current (take 1 gen-score) ;;first item in list for now
+;(let [gen (repeatedly 3 (fn [] (random-answer knapPI_16_200_1000_1)))
+;      gen-score (map #(add-score penalized-score %) gen)
+;      current (take 1 gen-score) ;;first item in list for now
 ;;        something to find best item in current gen (map #(if (% > current) current=% do nothing) y)
 ;;need to save generation number and instance with score
-      ]
-         [gen-score current]
-  )
+;      ]
+;         [gen-score current]
+;  )
+
 
 (defn hill-climber
   [mutator scorer instance max-tries]
