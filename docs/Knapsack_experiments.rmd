@@ -129,7 +129,7 @@ From here down is added statistics/test code for the data our AI group has gener
 A plot of a few searchers ran on all given example problems. An additional case was included for lexi-score.
 
 ```{r, echo=FALSE}
-data_30_runs_lexi <- read.csv("../data/data_30_runs_1000_tries_with_lexi.txt", sep="")
+data_30_runs_lexi <- read.csv("../data/data_10_runs_1000_tries_evo_hill_random_penalized.txt", sep="")
 
 data_30_runs_lexi$Non_negative_score = ifelse(data_30_runs_lexi$Score<0, 0, data_30_runs_lexi$Score)
 
