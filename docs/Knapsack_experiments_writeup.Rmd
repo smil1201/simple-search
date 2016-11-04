@@ -1,30 +1,33 @@
 ---
-title: "Knapsack experiments: Team Sleepless"
+title: 'Knapsack experiments: Team Sleepless'
 author: "Sam Miller, Richard Stangl, and Elsa Browning"
 date: "November 2, 2016"
-output: html_document
+output: pdf_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+#Generational Algorithm
+
+Our group chose to head in the direction of generational algorithms. We basically made an advanced version of hill-climber that works on an entire population instead of on individuals. Our method was to create a population of random instances and then mutate that generation. We then combined the mutated and original populations, sorted them, and took the better half of the individuals. We then repeat this process on each successive population until we find the ideal solution or until we reach the maximum number of tries.
+
+```{r, echo=FALSE}
+data_5_runs_evo_lexi <- read.csv("../data/data_5_runs_1000_tries_evo_alg_lexi.txt", sep="")
+
+data_5_runs_evo_lexi$Non_negative_score = ifelse(data_5_runs_evo_lexi$Score<0, 0, data_5_runs_evo_lexi$Score)
+
+plot(data_5_runs_evo_lexi$Non_negative_score ~ data_5_runs_evo_lexi$Search_method,
+     main="Evolutionary Algorithm vs Hill Climber", xlab="Searcher", ylab="Score")
 ```
 
-## R Markdown
+They look pretty similar here, both seem to reach a local maximum every time in the knapsack problems 11 and 13. However, in the knapsack problem 16, we out perform hill climber. So we chose to plot a couple of different problem instances from 16 to emphasize this difference.
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+```{r, echo=FALSE}
+data_5_runs_evo_16 <- read.csv("../data/data_20_runs_knapPI_16_200_evo_alg_lexi.txt", sep="")
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+data_5_runs_evo_16$Non_negative_score = ifelse(data_5_runs_evo_16$Score<0, 0, data_5_runs_evo_16$Score)
 
-```{r cars}
-summary(cars)
+plot(data_5_runs_evo_16$Non_negative_score ~data_5_runs_evo_16$Search_method,
+     main="Knapsack Problem 16", xlab="Searcher", ylab="Score")
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Now that we are focusing only on problem 16, the strengths of our algorithm our more apparent in that we outperform hill climber in every instance that we tested. We are reasonably confident that this is because we start with more hill climbers in different starting positions, giving us a better chance of finding the absolute maximum.
