@@ -5,9 +5,9 @@ date: "November 2, 2016"
 output: pdf_document
 ---
 
-#Generational Algorithm
+#Genetic Algorithm
 
-Our group chose to head in the direction of generational algorithms. We basically made an advanced version of hill-climber that works on an entire population instead of on individuals. Our method was to create a population of random instances and then mutate that generation. We then combined the mutated and original populations, sorted them, and took the better half of the individuals. We then repeat this process on each successive population until we find the ideal solution or until we reach the maximum number of tries.
+Our group chose to head in the direction of genetic algorithms. We basically made an advanced version of hill-climber that works on an entire population instead of on individuals. Our method was to create a population of random instances and then mutate that generation. We then combined the mutated and original populations, sorted them, and took the better half of the individuals. We then repeat this process on each successive population until we find the ideal solution or until we reach the maximum number of tries.
 
 ```{r, echo=FALSE}
 data_5_runs_evo_lexi <- read.csv("../data/data_5_runs_1000_tries_evo_alg_lexi.txt", sep="")
