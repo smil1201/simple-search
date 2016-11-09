@@ -7,15 +7,15 @@ output: pdf_document
 
 # Introduction
 
-In this set of experiments, we explore the performance of a simple genetic algorithm and compare it to the performance of the basic hill-climber algorithm. Our algorithm is essentially an expanded version of hill-climber that works on an entire population instead of on individuals. The hill-climber starts with a randomly generated answer, and then repeatedly mutates the best answer found so far, keeping the better of the original and the tweaked answer at each step. Our method was to create a population of random instances, creating our first generation, and then mutate that generation to create our second generation. We then combined the two generations, sorted them, and took the better half of the individuals. We repeat this process on each successive population until we find the ideal solution or until we reach the maximum number of tries. Our algorithm is much slower than the hill-climber algorithm in running time because it's running on populations instead of on individuals.  
+In this set of experiments, we explore the performance of a simple genetic algorithm and compare it to the performance of the basic hill-climber algorithm. Our algorithm is essentially an expanded version of hill-climber that works on an entire population instead of on individuals. The hill-climber starts with a randomly generated answer, and then repeatedly mutates the best answer found so far, keeping the better of the original and the tweaked answer at each step. Our method was to create a population of random solutions, creating our first generation, and then mutate that generation to create our second generation. We then combined the two generations, sorted them, and took the better half of the individuals. We repeat this process on each successive population until we find the ideal solution or until we reach the maximum number of tries. Our algorithm is much slower than the hill-climber algorithm in running time because it's running on populations instead of on individuals.  
 
-For both algorithms, we used the lexi-score method to score our instances. Lexi-score is a method Nic McPhee created _MORE INFO HERE ABOUT HOW LEXI SCORE WORKS!_  
+In this experiment, we used the lexi-score method to score our solutions. Lexi-score is a method Nic McPhee created. This method takes a potential solution to the knapsack problem, dumps the items out of the knapsack, shuffles them, and then scores all items that fit in the bag in the order that the appear in the shuffled list. The score is a subset of the items in the bag meaning the knapsack could be overweight. This is still a valid representation of the algorithms' performance as we used lexi-score for both hill-climber and our evolutionary algorithm. We used this because we wanted to be able to include all of the runs in our graphical representation rather than throwing away overweight solutions.
 
-We used McPhee's mutation method as well _WE CAN EITHER TAKE HIS DESCRIPTION AND CREDIT HIM OR REFERENCE HIS PAPER SOMEHOW_
+We used McPhee's mutation method as well, as described in "Knapsack experiments sample write-up", in which the mutation changes the probability of flipping a bit.
 
 # Experimental setup
 
-We initially started with a `max-tries` value of 1000 for the 3 different types of knapsack problems:
+We initially started with a `max-tries` value of 1,000 for the 3 different types of knapsack problems:
 
 * `knapPI_11_20_1000_4`
 * `knapPI_13_20_1000_4` 
@@ -24,9 +24,10 @@ We initially started with a `max-tries` value of 1000 for the 3 different types 
 * `knapPI_13_200_1000_4`
 * `knapPI_16_200_1000_4`
 
+
 Half of these are 20 item problems, and half are 200 item problems. We did 5 independent runs of each treatment on each problem.
 
-As we progressed, we switched to focusing on instances of the type knapsackPI_16 variety. We utilized five of the twenty item instances:
+As we progressed, we switched to focusing on instances of the type knapsackPI_16 variety. We utilized 5 of the 20 item instances:
 
 * `knapPI_16_20_1000_1`
 * `knapPI_16_20_1000_2`
@@ -34,7 +35,9 @@ As we progressed, we switched to focusing on instances of the type knapsackPI_16
 * `knapPI_16_20_1000_4`
 * `knapPI_16_20_1000_5`
 
-and later we used five of the thousand item instances:
+\newpage
+
+and later we used 5 of the 1,000 item instances:
 
 * `knapPI_16_1000_1000_1`
 * `knapPI_16_1000_1000_2`
@@ -43,13 +46,13 @@ and later we used five of the thousand item instances:
 * `knapPI_16_1000_1000_5`
 
 
-We increased the `max-tries` value to 10000 for these in order to see if there was a definite difference in the two algorithms. We ran this data 1000 times to make sure we had consistent data. _NOT SURE WHAT WE SHOULD SAY ABOUT THIS, BUT WE SHOULD MENTION HOW MANY RUNS WE DID AND WHAT IT CHANGED/HOW IT HELPED_
+We increased the `max-tries` value to 10,000 for these in order to see if there was a definite difference in the two algorithms. We ran this data 1,000 times to make sure we had consistent data. The names of the knapsack instances are abbreviated, e.g., `k_16_1000_1000_1`, in diagrams below. Also abbreviated are the search method names: 'evolutionary-algorithm' is shortened to 'evo', and 'hill-climber' is shortened to 'hill' in all variables involved in the following graphs.
 
 # Results
 
 ## A comparison of our searcher to basic hill-climber
 
-In our first graph, we show the comparison of our evolutionary algorithm to the basic hill-climber algorithm on the 3 different types of knapsack problem instances:
+In our first graph, we show the comparison of our evolutionary algorithm and the basic hill-climber algorithm on the 3 different types of knapsack problem instances:
 
 ```{r, echo=FALSE}
 data_5_runs_evo_lexi <- read.csv("../data/data_5_runs_1000_tries_evo_alg_lexi.txt", sep="")
@@ -62,7 +65,7 @@ plot(data_5_runs_evo_lexi$Non_negative_score ~ data_5_runs_evo_lexi$Search_metho
 
 Here we can see that the algorithms mostly performed the same, but our evolutionary algorithm had a few outliers that were better than the hill-climber. Looking into this further, we discovered that our data performed the same on the knapsack problems 11 and 13, but our algorithm outperformed hill-climber on problem 16. This is where our few outliers came from on our graph.
 
-Investigating this further, we generated data solely for instances of problem 16. Here, we plot the results of 1000 runs with 10000 `max-tries` on five of the 20 item problems:
+Investigating this further, we generated data solely for instances of problem 16. Here, we plot the results of 1,000 runs with 10,000 `max-tries` on five of the 20 item problems:
 
 ```{r, echo=FALSE}
 data_evo_1000_runs <- read.csv("../data/data_1000_runs_10000_tries_knap1620_evo_lexi.txt", sep="")
@@ -97,10 +100,10 @@ pairwise.wilcox.test(twenty_item$Score, twenty_item$Search_method)
 ```
 In this case, our algorithm is _not_ statistically significantly different. We received a p value of 0.2. We think that we received such a high p-value because of our number of max-tries; we must have found the absolute max (or close to it) with both algorithms, meaning neither algorithm could outperform the other because they both found the best possible result.
 
-We decided to investigate this a little further by running the search-methods on some of the problem 16 instances with 1000 items. This meant we would most likely not reach the absolute max because we had more complex problems which would mean we could see if our algorithm was reaching higher than hill-climber consistently or if they truly were about the same and not statistically significant.
+We decided to investigate this a little further by running the search-methods on some of the problem 16 instances with 1,000 items. This meant we would most likely not reach the absolute max because we had more complex problems which would mean we could see if our algorithm was reaching higher than hill-climber consistently or if they truly were about the same and not statistically significant.
 \newpage
 
-Here we plot the results of 50 runs with 10000 `max-tries` on five of the 1000 item problems:  
+Here we plot the results of 50 runs with 10,000 `max-tries` on 5 of the 1,000 item problems:  
 
 ```{r, echo=FALSE}
 data_evo_50_runs <- read.csv("../data/data_50_runs_10000_tries_knap16_evo_lexi.txt", sep="")
@@ -133,22 +136,25 @@ We are clearly performing better, _but are we finding a difference that is stati
 pairwise.wilcox.test(thousand_item$Score, thousand_item$Search_method)
 ```
 
-Our p-value is $1.3^{-4}$ which is less than the desired 0.05 p-value. We can conclude there is a mildly significant difference between the two algorithms.
-Here is a comparison of score for each search method for the 1000 runs of the twenty item instances:
+Our p-value is $1.3^{-4}$ which is more significant than our last experiment which included problems of all knapsack types. We can conclude there is a fairly significant difference between the two algorithms, especially when looking at the more complex problems.
+
+Here is a comparison of score for each search method for the 1,000 runs of the 20 item instances:
 
 ```{r warning=FALSE, echo=FALSE}
 library("ggplot2")
 
 ggplot(twenty_item, 
-       aes(x=factor(Search_method), y=Score, group=Search_method)) + 
+       aes(x=Search_method, y=Score, group=Search_method)) + 
   geom_boxplot() + facet_grid(. ~ Problem)
 ```
 
-Here is a comparison of score for each search method for the 1000 runs of the twenty item instances:
+Here is a comparison of score for each search method for the 1,000 runs of the 20 item instances:
 
 ```{r warning=FALSE, echo=FALSE}
+
+
 ggplot(thousand_item, 
-       aes(x=factor(Search_method), y=Score, group=Search_method)) + 
+       aes(x=Search_method, y=Score, group=Search_method)) + 
   geom_boxplot() + facet_grid(. ~ Problem)
 ```
 
